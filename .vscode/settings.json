@@ -1,0 +1,5 @@
+{
+    "editor.renderLineHighlightOnlyWhenFocus": false,
+    "editor.matchBrackets": "never",
+    "editor.renderLineHighlight": "all"
+}
