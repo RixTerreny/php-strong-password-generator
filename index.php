@@ -1,23 +1,27 @@
 <?php
-$lung = isset($_GET["lunghezza"]);
 
-$ripe = isset($_GET["ripetizioni"]);
+
+$alert=false;
+if(isset($_GET["lunghezza"]) && $_GET["lunghezza"]>= 6){
+    $lung = $_GET["lunghezza"];
+}
+else{
+    $alert=true;
+    $lung=0;
+}
+
+$ripe =1;
+if(isset($_GET["ripetizioni"])){
+    $ripe = $_GET["ripetizioni"];
+}
 
 $letter = isset($_GET["lettere"]);
 $num = isset($_GET["numeri"]);
 $simb = isset($_GET["simboli"]);
 
-function passwordGen($str){
-    $password =  chr(rand(65,90));
-    for ($i=0; $i < $str-4; $i++) { 
-        $password .= chr(rand(97,122));
-    }
-    $password .=  chr(rand(35,45)) .rand(10, 99); 
-    return $password;
-};
+include 'function.php';
 
-$password= passwordGen(8);
-echo $password;
+$password= passwordGen($lung,$letter,$num,$simb,$ripe);
 ?>
 
 <!DOCTYPE html>
@@ -31,14 +35,21 @@ echo $password;
 </head>
 <body class="bg-dark">
     <div class="container text-white text-center">
+        <?php
+        if($alert==true){
+            echo "<div class='alert alert-danger mt-3' role='alert'>La password deve essere almeno di 6 caratteri</div>";
+        }
+        ?>
         <h1 class="my-4">Strong password generator</h1>
         <h2 class="mb-3">Genera una password sicura</h2>
-
+        <?php
+        echo "<div class='alert alert-info p-1 w-50 fs-5 mx-auto' role='alert'>Password Generata: $password</div>";
+        ?>
 
         <form class="bg-white p-2 radius text-black w-50 m-auto" action="" method="GET">
             <div class="d-flex px-5 justify-content-between mt-2">
                 <div class="fs-5">Lunghezza password:</div>
-                <input class="me-5" type="text" name="lunghezza">
+                <input class="me-5" type="text" name="lunghezza" placeholder="Minimo 6 caratteri">
             </div>
 
             <div class="d-flex px-5 justify-content-between mt-3">
@@ -59,7 +70,7 @@ echo $password;
                     <!-- seconda checkbox -->
                     <div class="d-flex ms-5 mt-3">
                         <input type="checkbox" name="lettere">
-                        <div class="ms-1">Lettere</div>
+                        <div class="ms-1">Maiuscole</div>
                     </div>
 
                     <div class="d-flex ms-5">
